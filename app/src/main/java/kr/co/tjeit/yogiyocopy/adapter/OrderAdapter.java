@@ -3,12 +3,16 @@ package kr.co.tjeit.yogiyocopy.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import kr.co.tjeit.yogiyocopy.R;
 import kr.co.tjeit.yogiyocopy.data.OrderData;
@@ -43,6 +47,24 @@ public class OrderAdapter extends ArrayAdapter<OrderData> {
         if (row == null) {
             row = inf.inflate(R.layout.order_list_item, null);
         }
+
+        OrderData data = mList.get(position);
+
+        TextView storeNameTxt = (TextView) row.findViewById(R.id.storeNameTxt);
+        storeNameTxt.setText(data.getOrderStore().getStoreName());
+
+        TextView dataTxt = (TextView) row.findViewById(R.id.dataTxt);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 M월 dd일");
+        dataTxt.setText(sdf.format(data.getOrderDate().getTime()));
+
+        TextView locationTxt = (TextView) row.findViewById(R.id.locationTxt);
+        locationTxt.setText(data.getLocation());
+
+        TextView amountTxt = (TextView) row.findViewById(R.id.amountTxt);
+        String amountStr = String.format(Locale.KOREA, "%,d원", data.getCost());
+        amountTxt.setText(amountStr);
+
         return row;
     }
 }
